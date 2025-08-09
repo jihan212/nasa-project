@@ -12,7 +12,7 @@ body {
 	padding: 0;
 	min-height: 100vh;
 	overflow-x: hidden;
-	overflow-y: hidden;
+	overflow-y: auto;
 }
 
 /* Smooth scrolling */
@@ -158,10 +158,6 @@ nav .material-icons {
 	left: 15%;
 	top: 70%;
 	animation-delay: 18s;
-}
-
-/* Full height container */
-.full-height-container {
 }
 
 /* Remove any default margins from root elements */

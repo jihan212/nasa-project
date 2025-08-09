@@ -4,10 +4,10 @@ const Centered = (props) => {
 	const styles = {
 		root: {
 			display: 'flex',
-			alignItems: 'center',
+			alignItems: 'flex-start',
 			justifyContent: 'center',
 			width: '100%',
-			height: '100%',
+			minHeight: '100%',
 			animation: 'fadeInUp 1.2s ease-out',
 			position: 'relative',
 		},

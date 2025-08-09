@@ -1,19 +1,59 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import Clickable from '../components/Clickable';
 
 const Launch = (props) => {
+	// Debug: Log planets data
+	useEffect(() => {
+		console.log('Planets data received:', props.planets);
+		console.log('Planets count:', props.planets?.length);
+	}, [props.planets]);
+
 	const selectorBody = useMemo(() => {
 		return props.planets?.map((planet) => (
 			<option
-				value={planet.kepler_name}
-				key={planet.kepler_name}
+				value={planet.name}
+				key={planet.id}
 			>
-				{planet.kepler_name}
+				{planet.name} - {planet.description}
 			</option>
 		));
 	}, [props.planets]);
 
 	const today = new Date().toISOString().split('T')[0];
+
+	// Add CSS keyframes for animations
+	const keyframes = `
+		@keyframes fadeInUp {
+			from {
+				opacity: 0;
+				transform: translateY(30px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+		
+		@keyframes glow {
+			0%, 100% { text-shadow: 0 0 40px rgba(161, 236, 251, 0.8); }
+			50% { text-shadow: 0 0 60px rgba(161, 236, 251, 1), 0 0 80px rgba(161, 236, 251, 0.6); }
+		}
+		
+		@keyframes pulse {
+			0%, 100% { opacity: 1; }
+			50% { opacity: 0.7; }
+		}
+		
+		@keyframes float {
+			0%, 100% { transform: translateY(0px); }
+			50% { transform: translateY(-10px); }
+		}
+		
+		@keyframes starfield {
+			from { transform: translateY(0px) rotate(0deg); }
+			to { transform: translateY(-100vh) rotate(360deg); }
+		}
+	`;
 
 	const styles = {
 		title: {
@@ -219,6 +259,7 @@ const Launch = (props) => {
 
 	return (
 		<div>
+			<style>{keyframes}</style>
 			<h1 style={styles.title}>🚀 Mission Launch Control</h1>
 			<p style={styles.paragraph}>
 				Schedule a mission launch for interstellar travel to one of the
@@ -228,6 +269,191 @@ const Launch = (props) => {
 				Only confirmed planets matching the following criteria are
 				available for the earliest scheduled missions:
 			</p>
+
+			{/* Planets Display Section */}
+			<div
+				style={{
+					background: 'rgba(161, 236, 251, 0.1)',
+					border: '1px solid rgba(161, 236, 251, 0.3)',
+					borderRadius: '15px',
+					padding: '20px',
+					marginBottom: '25px',
+					boxShadow: '0 8px 32px rgba(161, 236, 251, 0.1)',
+					backdropFilter: 'blur(10px)',
+					animation: 'fadeInUp 1s ease-out 0.2s both',
+				}}
+			>
+				<h3
+					style={{
+						color: '#a1ecfb',
+						fontSize: '18px',
+						marginBottom: '15px',
+						textAlign: 'center',
+						textShadow: '0 0 20px rgba(161, 236, 251, 0.6)',
+						fontWeight: 'bold',
+						letterSpacing: '1px',
+					}}
+				>
+					🌍 Available Planets ({props.planets?.length || 0})
+				</h3>
+				{props.planets && props.planets.length > 0 ? (
+					<div
+						style={{
+							display: 'grid',
+							gridTemplateColumns:
+								'repeat(auto-fit, minmax(250px, 1fr))',
+							gap: '15px',
+						}}
+					>
+						{props.planets.map((planet, index) => (
+							<div
+								key={planet.id}
+								style={{
+									background:
+										'linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(161, 236, 251, 0.05))',
+									border: '1px solid rgba(161, 236, 251, 0.3)',
+									borderRadius: '10px',
+									padding: '15px',
+									textAlign: 'center',
+									transition: 'all 0.3s ease',
+									animation: `fadeInUp 0.8s ease-out ${
+										0.4 + index * 0.1
+									}s both`,
+									cursor: 'pointer',
+									position: 'relative',
+									overflow: 'hidden',
+								}}
+								onMouseEnter={(e) => {
+									e.currentTarget.style.transform =
+										'translateY(-3px) scale(1.02)';
+									e.currentTarget.style.boxShadow =
+										'0 10px 25px rgba(161, 236, 251, 0.3)';
+									e.currentTarget.style.borderColor =
+										'rgba(161, 236, 251, 0.6)';
+								}}
+								onMouseLeave={(e) => {
+									e.currentTarget.style.transform =
+										'translateY(0) scale(1)';
+									e.currentTarget.style.boxShadow = 'none';
+									e.currentTarget.style.borderColor =
+										'rgba(161, 236, 251, 0.3)';
+								}}
+							>
+								<div
+									style={{
+										position: 'absolute',
+										top: 0,
+										left: 0,
+										right: 0,
+										height: '2px',
+										background:
+											'linear-gradient(90deg, #00d4ff, #a1ecfb, #00d4ff)',
+										opacity: 0.7,
+									}}
+								></div>
+								<h4
+									style={{
+										color: '#00d4ff',
+										fontSize: '14px',
+										marginBottom: '8px',
+										fontWeight: 'bold',
+										textShadow:
+											'0 0 15px rgba(0, 212, 255, 0.5)',
+										letterSpacing: '0.5px',
+									}}
+								>
+									{planet.name}
+								</h4>
+								<p
+									style={{
+										color: '#a1ecfb',
+										fontSize: '11px',
+										marginBottom: '8px',
+										lineHeight: '1.3',
+										opacity: 0.9,
+									}}
+								>
+									{planet.description}
+								</p>
+								<div
+									style={{
+										display: 'flex',
+										justifyContent: 'space-around',
+										fontSize: '10px',
+										color: '#a1ecfb',
+										opacity: 0.8,
+										flexWrap: 'wrap',
+										gap: '6px',
+									}}
+								>
+									<span
+										style={{
+											display: 'flex',
+											alignItems: 'center',
+											gap: '3px',
+										}}
+									>
+										🌙 {planet.moons}
+									</span>
+									<span
+										style={{
+											display: 'flex',
+											alignItems: 'center',
+											gap: '3px',
+										}}
+									>
+										⚖️ {planet.gravity}g
+									</span>
+									<span
+										style={{
+											display: 'flex',
+											alignItems: 'center',
+											gap: '3px',
+										}}
+									>
+										📅 {planet.yearLength}
+									</span>
+								</div>
+							</div>
+						))}
+					</div>
+				) : (
+					<div
+						style={{
+							textAlign: 'center',
+							padding: '20px',
+							color: '#ff6b6b',
+						}}
+					>
+						<div
+							style={{
+								fontSize: '36px',
+								marginBottom: '8px',
+								animation: 'pulse 2s ease-in-out infinite',
+							}}
+						>
+							🌌
+						</div>
+						<p
+							style={{
+								fontSize: '13px',
+								fontStyle: 'italic',
+								marginBottom: '6px',
+							}}
+						>
+							No planets available
+						</p>
+						<p
+							style={{
+								fontSize: '11px',
+								opacity: 0.7,
+							}}
+						>
+							Please check your server connection
+						</p>
+					</div>
+				)}
+			</div>
 			<form
 				onSubmit={handleSubmit}
 				style={styles.form}
