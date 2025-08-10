@@ -6,15 +6,18 @@ const Launch = (props) => {
 	useEffect(() => {
 		console.log('Planets data received:', props.planets);
 		console.log('Planets count:', props.planets?.length);
+		if (props.planets && props.planets.length > 0) {
+			console.log('Sample planet data:', props.planets[0]);
+		}
 	}, [props.planets]);
 
 	const selectorBody = useMemo(() => {
-		return props.planets?.map((planet) => (
+		return props.planets?.map((planet, index) => (
 			<option
-				value={planet.name}
-				key={planet.id}
+				value={planet.kepid || `Kepler-${index + 1}`}
+				key={planet.kepid || index}
 			>
-				{planet.name} - {planet.description}
+				{planet.kepler_name}
 			</option>
 		));
 	}, [props.planets]);
@@ -213,17 +216,7 @@ const Launch = (props) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		const formData = new FormData(e.target);
-		const planet = formData.get('planets-selector');
-		const launchDate = formData.get('launch-day');
-		const mission = formData.get('mission-name');
-
-		props.submitLaunch({
-			planet,
-			launchDate,
-			mission,
-		});
-
+		props.submitLaunch(e);
 		e.target.reset();
 	};
 
@@ -307,7 +300,7 @@ const Launch = (props) => {
 					>
 						{props.planets.map((planet, index) => (
 							<div
-								key={planet.id}
+								key={planet.kepid || index}
 								style={{
 									background:
 										'linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(161, 236, 251, 0.05))',
@@ -362,7 +355,7 @@ const Launch = (props) => {
 										letterSpacing: '0.5px',
 									}}
 								>
-									{planet.name}
+									{planet.kepid || `Kepler-${index + 1}`}
 								</h4>
 								<p
 									style={{
@@ -373,7 +366,9 @@ const Launch = (props) => {
 										opacity: 0.9,
 									}}
 								>
-									{planet.description}
+									Confirmed exoplanet with {planet.koi_prad}{' '}
+									Earth radii and {planet.koi_insol} solar
+									flux
 								</p>
 								<div
 									style={{
@@ -393,7 +388,7 @@ const Launch = (props) => {
 											gap: '3px',
 										}}
 									>
-										🌙 {planet.moons}
+										🌍 {planet.koi_prad} R⊕
 									</span>
 									<span
 										style={{
@@ -402,7 +397,7 @@ const Launch = (props) => {
 											gap: '3px',
 										}}
 									>
-										⚖️ {planet.gravity}g
+										☀️ {planet.koi_insol} S⊕
 									</span>
 									<span
 										style={{
@@ -411,7 +406,7 @@ const Launch = (props) => {
 											gap: '3px',
 										}}
 									>
-										📅 {planet.yearLength}
+										✅ {planet.koi_disposition}
 									</span>
 								</div>
 							</div>

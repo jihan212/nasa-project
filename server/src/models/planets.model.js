@@ -1,37 +1,51 @@
-const planets = [
-	{
-		id: 1,
-		name: 'Earth',
-		description: 'Our home planet, the third planet from the Sun',
-		imageUrl:
-			'https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?w=400',
-		moons: 1,
-		gravity: 9.8,
-		dayLength: 24,
-		yearLength: 365.25,
-	},
-	{
-		id: 2,
-		name: 'Mars',
-		description: 'The Red Planet, fourth planet from the Sun',
-		imageUrl:
-			'https://images.unsplash.com/photo-1614732414444-096e5f1122d5?w=400',
-		moons: 2,
-		gravity: 3.7,
-		dayLength: 24.6,
-		yearLength: 687,
-	},
-	{
-		id: 3,
-		name: 'Jupiter',
-		description: 'The largest planet in our solar system',
-		imageUrl:
-			'https://images.unsplash.com/photo-1614732414444-096e5f1122d5?w=400',
-		moons: 79,
-		gravity: 24.8,
-		dayLength: 9.9,
-		yearLength: 4333,
-	},
-];
+const fs = require('fs');
+const path = require('path');
+const { parse } = require('csv-parse');
 
-module.exports = planets;
+const habitablePlanets = [];
+
+function isHabitablePlanet(planet) {
+	return (
+		planet['koi_disposition'] === 'CONFIRMED' &&
+		planet['koi_insol'] > 0.36 &&
+		planet['koi_insol'] < 1.11 &&
+		planet['koi_prad'] < 1.6
+	);
+}
+
+function loadPlanetsData() {
+	return new Promise((resolve, reject) => {
+		fs.createReadStream(
+			path.join(__dirname, '..', '..', 'data', 'kepler_data.csv')
+		)
+			.pipe(
+				parse({
+					comment: '#',
+					columns: true,
+					relax_quotes: true,
+					relax_column_count: true,
+					skip_empty_lines: true,
+				})
+			)
+			.on('data', (data) => {
+				if (isHabitablePlanet(data)) {
+					habitablePlanets.push(data);
+				}
+			})
+			.on('error', (err) => {
+				console.log(err);
+				reject(err);
+			})
+			.on('end', () => {
+				console.log(
+					`${habitablePlanets.length} habitable planets found!`
+				);
+				resolve();
+			});
+	});
+}
+
+module.exports = {
+	loadPlanetsData,
+	planets: habitablePlanets,
+};
