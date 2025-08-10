@@ -355,7 +355,8 @@ const Launch = (props) => {
 										letterSpacing: '0.5px',
 									}}
 								>
-									{planet.kepid || `Kepler-${index + 1}`}
+									{planet.kepler_name ||
+										`Kepler-${index + 1}`}
 								</h4>
 								<p
 									style={{
@@ -367,7 +368,7 @@ const Launch = (props) => {
 									}}
 								>
 									Confirmed exoplanet with {planet.koi_prad}{' '}
-									Earth radii and {planet.koi_insol} solar
+									Earth radius and {planet.koi_insol} solar
 									flux
 								</p>
 								<div

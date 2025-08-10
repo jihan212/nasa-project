@@ -79,16 +79,16 @@ nasa-project/
 
 ### Running the Application
 
-1. **Start the backend server**
+1.  **Start the backend server**
 
     ```bash
     cd server
     npm start
     ```
 
-    The server will run on `http://localhost:5000`
+         The server will run on `http://localhost:8000`
 
-2. **Start the frontend development server**
+2.  **Start the frontend development server**
     ```bash
     cd client
     npm start
