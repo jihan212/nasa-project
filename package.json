@@ -25,5 +25,8 @@
 	"bugs": {
 		"url": "https://github.com/jihan212/nasa-project/issues"
 	},
-	"homepage": "https://github.com/jihan212/nasa-project#readme"
+	"homepage": "https://github.com/jihan212/nasa-project#readme",
+	"dependencies": {
+		"morgan": "^1.10.1"
+	}
 }
