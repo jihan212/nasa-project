@@ -17,7 +17,7 @@ const Launch = (props) => {
 				value={planet.kepid || `Kepler-${index + 1}`}
 				key={planet.kepid || index}
 			>
-				{planet.kepler_name}
+				{planet.keplerName}
 			</option>
 		));
 	}, [props.planets]);
@@ -355,8 +355,7 @@ const Launch = (props) => {
 										letterSpacing: '0.5px',
 									}}
 								>
-									{planet.kepler_name ||
-										`Kepler-${index + 1}`}
+									{planet.keplerName || `Kepler-${index + 1}`}
 								</h4>
 								<p
 									style={{
