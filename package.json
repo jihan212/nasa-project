@@ -27,6 +27,8 @@
 	},
 	"homepage": "https://github.com/jihan212/nasa-project#readme",
 	"dependencies": {
+		"mongodb": "^6.19.0",
+		"mongoose": "^8.17.1",
 		"morgan": "^1.10.1"
 	}
 }
