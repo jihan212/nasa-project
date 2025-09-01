@@ -22,10 +22,15 @@ mongoose
 async function startServer() {
 	await mongoose.connect(MONGO_URL);
 
+	// Clear existing planets before loading
+	const planets = require('./models/planets.mongo');
+	await planets.deleteMany({});
+	console.log('Cleared existing planets data');
+
 	await loadPlanetsData();
 
 	server.listen(PORT, () => {
-		console.log(`Listening on the post ${PORT}`);
+		console.log(`Listening on port ${PORT}`);
 	});
 }
 

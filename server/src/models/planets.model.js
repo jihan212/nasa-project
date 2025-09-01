@@ -66,7 +66,13 @@ function loadPlanetsData() {
 }
 
 async function getAllPlanets() {
-	return await planets.find({});
+	return await planets.find(
+		{},
+		{
+			_id: 0,
+			keplerName: 1,
+		}
+	);
 }
 
 async function savePlanet(planet) {
@@ -80,19 +86,24 @@ async function savePlanet(planet) {
 			return;
 		}
 
+		// Check if planet already exists
+		const existingPlanet = await planets.findOne({
+			keplerName: planet['kepler_name'],
+		});
+
+		if (existingPlanet) {
+			return; // Skip if planet already exists
+		}
+
 		console.log(`Saving planet: ${planet['kepler_name']}`);
 
-		const result = await planets.updateOne(
-			{
-				keplerName: planet['kepler_name'],
-			},
-			{
-				keplerName: planet['kepler_name'],
-			},
-			{
-				upsert: true,
-			}
-		);
+		const result = await planets.create({
+			keplerName: planet['kepler_name'],
+			kepid: planet['kepid'],
+			koi_prad: planet['koi_prad'],
+			koi_insol: planet['koi_insol'],
+			koi_disposition: planet['koi_disposition'],
+		});
 
 		if (result.upsertedCount > 0) {
 			console.log(`✅ Inserted new planet: ${planet['kepler_name']}`);

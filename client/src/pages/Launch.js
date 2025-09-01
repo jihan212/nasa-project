@@ -12,12 +12,12 @@ const Launch = (props) => {
 	}, [props.planets]);
 
 	const selectorBody = useMemo(() => {
-		return props.planets?.map((planet, index) => (
+		return props.planets?.map((planetName, index) => (
 			<option
-				value={planet.kepid || `Kepler-${index + 1}`}
-				key={planet.kepid || index}
+				value={planetName}
+				key={index}
 			>
-				{planet.keplerName}
+				{planetName}
 			</option>
 		));
 	}, [props.planets]);
@@ -298,9 +298,9 @@ const Launch = (props) => {
 							gap: '15px',
 						}}
 					>
-						{props.planets.map((planet, index) => (
+						{props.planets.map((planetName, index) => (
 							<div
-								key={planet.kepid || index}
+								key={index}
 								style={{
 									background:
 										'linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(161, 236, 251, 0.05))',
@@ -355,7 +355,7 @@ const Launch = (props) => {
 										letterSpacing: '0.5px',
 									}}
 								>
-									{planet.keplerName || `Kepler-${index + 1}`}
+									{planetName}
 								</h4>
 								<p
 									style={{
@@ -366,9 +366,7 @@ const Launch = (props) => {
 										opacity: 0.9,
 									}}
 								>
-									Confirmed exoplanet with {planet.koi_prad}{' '}
-									Earth radius and {planet.koi_insol} solar
-									flux
+									Confirmed habitable exoplanet
 								</p>
 								<div
 									style={{
@@ -388,25 +386,7 @@ const Launch = (props) => {
 											gap: '3px',
 										}}
 									>
-										🌍 {planet.koi_prad} R⊕
-									</span>
-									<span
-										style={{
-											display: 'flex',
-											alignItems: 'center',
-											gap: '3px',
-										}}
-									>
-										☀️ {planet.koi_insol} S⊕
-									</span>
-									<span
-										style={{
-											display: 'flex',
-											alignItems: 'center',
-											gap: '3px',
-										}}
-									>
-										✅ {planet.koi_disposition}
+										✨ Kepler Discovery
 									</span>
 								</div>
 							</div>
